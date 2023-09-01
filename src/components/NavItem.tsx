@@ -1,7 +1,14 @@
+import { User } from '@/pages/api/auth/[...nextauth]'
+import { signIn, signOut } from 'next-auth/react'
 import Link from 'next/link'
 import React from 'react'
 
-const NavItem = ({ mobile }: { mobile?: boolean }) => {
+interface NavItemProps {
+  mobile?: boolean
+  currentUser?: User | null
+}
+
+const NavItem = ({ mobile, currentUser }: NavItemProps) => {
   return (
     <ul
       className={`text-md justify-center flex gap-4 w-full items-center ${
@@ -14,12 +21,17 @@ const NavItem = ({ mobile }: { mobile?: boolean }) => {
       <li className='py-2 text-center border-b-4 cursor-pointer'>
         <Link href='/user'>User</Link>
       </li>
-      <li className='py-2 text-center border-b-4 cursor-pointer'>
-        <button>Signout</button>
-      </li>
-      <li className='py-2 text-center border-b-4 cursor-pointer'>
-        <button>Signin</button>
-      </li>
+
+      {currentUser ? (
+        <li className='py-2 text-center border-b-4 cursor-pointer'>
+          <button onClick={() => signOut()}>Signout</button>
+        </li>
+      ) : (
+        <li className='py-2 text-center border-b-4 cursor-pointer'>
+          {/* <button onClick={() => signIn()}>Signin</button> */}
+          <Link href='/auth/login'>Signin</Link>
+        </li>
+      )}
     </ul>
   )
 }
