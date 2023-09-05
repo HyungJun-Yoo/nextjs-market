@@ -4,8 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import { cert } from 'firebase-admin/app'
 import NextAuth, { AuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
-import { db } from '@/firebase/config'
-import { doc, getDoc } from 'firebase/firestore'
+import { firebase_getDocRef, firebase_getDoc } from '@/firebase/crud'
 
 export interface User {
   id: string
@@ -42,8 +41,8 @@ export const authOptions: AuthOptions = {
         }
 
         let user
-        const docRef = doc(db, 'users', credentials.email)
-        const docSnap = await getDoc(docRef)
+        const docRef = firebase_getDocRef('users', credentials.email)
+        const docSnap = await firebase_getDoc(docRef)
 
         if (docSnap.exists()) {
           user = docSnap.data() as User
