@@ -3,7 +3,12 @@ import Link from 'next/link'
 import Button from '@/components/Button'
 import Input from '@/components/Input'
 import React, { useState } from 'react'
-import { useForm, FieldValues, SubmitHandler } from 'react-hook-form'
+import {
+  useForm,
+  FieldValues,
+  SubmitHandler,
+  Controller,
+} from 'react-hook-form'
 import axios, { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 
@@ -15,6 +20,7 @@ const RegisterPage = () => {
     register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm<FieldValues>({
     defaultValues: {
       name: '',
@@ -43,32 +49,59 @@ const RegisterPage = () => {
         className='flex flex-col justify-center gap-4 min-w-[350px]'
       >
         <h1 className='text-2xl'>Register</h1>
-        <Input
-          id='email'
-          label='Email'
-          disabled={isLoading}
-          register={register}
-          errors={errors}
-          required
+        <Controller
+          name='email'
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <Input
+              id='email'
+              label='Email'
+              disabled={isLoading}
+              errors={errors}
+              value={value}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                onChange(e.target.value)
+              }
+            />
+          )}
+          rules={{ required: true }}
         />
 
-        <Input
-          id='name'
-          label='Name'
-          disabled={isLoading}
-          register={register}
-          errors={errors}
-          required
+        <Controller
+          name='name'
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <Input
+              id='name'
+              label='name'
+              disabled={isLoading}
+              errors={errors}
+              value={value}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                onChange(e.target.value)
+              }
+            />
+          )}
+          rules={{ required: true }}
         />
 
-        <Input
-          id='password'
-          label='Password'
-          type='password'
-          disabled={isLoading}
-          register={register}
-          errors={errors}
-          required
+        <Controller
+          name='password'
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <Input
+              id='password'
+              label='password'
+              type='password'
+              disabled={isLoading}
+              errors={errors}
+              value={value}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                onChange(e.target.value)
+              }
+            />
+          )}
+          rules={{ required: true }}
         />
 
         <Button label='Register' />

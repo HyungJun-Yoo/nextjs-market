@@ -1,7 +1,11 @@
 import bcrypt from 'bcryptjs'
 import { NextResponse } from 'next/server'
 import uuid from 'react-uuid'
-import { firebase_getDocRef, firebase_getDoc, firebase_setDoc } from '@/firebase/crud'
+import {
+  firebase_getDocRef,
+  firebase_getDoc,
+  firebase_setDoc,
+} from '@/firebase/crud'
 
 export async function POST(request: Request) {
   const body = await request.json()
@@ -12,7 +16,6 @@ export async function POST(request: Request) {
     email,
     image = '',
     password,
-    createdAt = Date.now(),
     userType = 'User',
   } = body
 
@@ -22,7 +25,10 @@ export async function POST(request: Request) {
   const docRef = firebase_getDocRef('users', email)
   const docSnap = await firebase_getDoc(docRef)
   if (docSnap.exists()) {
-    return NextResponse.json({ error: 'The email is already registered' }, { status: 409 })
+    return NextResponse.json(
+      { error: 'The email is already registered' },
+      { status: 409 }
+    )
   }
 
   await firebase_setDoc(docRef, {
@@ -31,7 +37,6 @@ export async function POST(request: Request) {
     email,
     image,
     password: hashedPassword,
-    createdAt,
     userType,
   })
 

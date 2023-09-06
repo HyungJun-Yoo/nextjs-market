@@ -1,4 +1,3 @@
-import { products } from './../../../types/product'
 import getCurrentUser from '@/app/actions/getCurrentUser'
 import { firebase_getCollection, firebase_addDoc } from '@/firebase/crud'
 import { NextResponse } from 'next/server'
@@ -10,8 +9,9 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json()
-  const { title, description, imageSrc, category, latitude, longitude, price } =
-    body
+  const { title, description, imageSrc, category, mapInfo, price } = body
+
+  const { latitude, longitude } = mapInfo
 
   Object.keys(body).forEach((value) => {
     if (!body[value]) {
