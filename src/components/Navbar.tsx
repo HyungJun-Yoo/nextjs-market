@@ -2,10 +2,10 @@
 import Link from 'next/link'
 import React, { useState } from 'react'
 import NavItem from './NavItem'
-import { User } from '@/pages/api/auth/[...nextauth]'
+import { IUser } from '@/firebase/type'
 
 interface NavbarProps {
-  currentUser?: User | null
+  currentUser?: IUser | null
 }
 
 const Navbar = ({ currentUser }: NavbarProps) => {
@@ -31,13 +31,11 @@ const Navbar = ({ currentUser }: NavbarProps) => {
         <div className='hidden sm:block'>
           <NavItem currentUser={currentUser} />
         </div>
-
-        <div className='block sm:hidden'>
-          {menu === false ? null : <NavItem mobile currentUser={currentUser} />}
-        </div>
       </div>
 
-      <div></div>
+      <div className='block sm:hidden'>
+        {menu === false ? null : <NavItem mobile currentUser={currentUser} />}
+      </div>
     </nav>
   )
 }

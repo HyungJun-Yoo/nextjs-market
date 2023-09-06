@@ -7,6 +7,7 @@ import {
   collection,
   CollectionReference,
   addDoc,
+  Timestamp,
 } from 'firebase/firestore'
 
 interface DocumentData {
@@ -26,6 +27,8 @@ export async function firebase_addDoc(
   const collectionRef = ref
   const collectionSnap = await addDoc(collectionRef, {
     ...data,
+    createdAt: Timestamp.fromDate(new Date()),
+    updateAt: Timestamp.fromDate(new Date()),
   })
 
   return collectionSnap.id
@@ -51,5 +54,7 @@ export async function firebase_setDoc(
   const docRef = ref
   await setDoc(docRef, {
     ...data,
+    createdAt: Timestamp.fromDate(new Date()),
+    updateAt: Timestamp.fromDate(new Date()),
   })
 }

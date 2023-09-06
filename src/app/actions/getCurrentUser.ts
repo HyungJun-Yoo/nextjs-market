@@ -1,7 +1,7 @@
 import { authOptions } from '@/pages/api/auth/[...nextauth]'
 import { getServerSession } from 'next-auth'
-import { User } from '@/pages/api/auth/[...nextauth]'
 import { firebase_getDocRef, firebase_getDoc } from '@/firebase/crud'
+import { IUser } from '@/firebase/type'
 
 export async function getSession() {
   return await getServerSession(authOptions)
@@ -18,7 +18,7 @@ export default async function getCurrentUser() {
 
     if (docSnap.exists()) {
       const currentUser = docSnap.data()
-      return currentUser as User
+      return currentUser as IUser
     } else {
       return null
     }

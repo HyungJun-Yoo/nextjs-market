@@ -1,11 +1,11 @@
-import { User } from '@/pages/api/auth/[...nextauth]'
 import { signIn, signOut } from 'next-auth/react'
 import Link from 'next/link'
 import React from 'react'
+import { IUser } from '@/firebase/type'
 
 interface NavItemProps {
   mobile?: boolean
-  currentUser?: User | null
+  currentUser?: IUser | null
 }
 
 const NavItem = ({ mobile, currentUser }: NavItemProps) => {
@@ -15,21 +15,29 @@ const NavItem = ({ mobile, currentUser }: NavItemProps) => {
         mobile && 'flex-col h-full'
       }`}
     >
-      <li className='py-2 text-center border-b-4 cursor-pointer'>
-        <Link href='/admin'>Admin</Link>
+      <li className='text-center cursor-pointer'>
+        <Link href='/admin' className='block w-full h-full border-b-4 py-2'>
+          Admin
+        </Link>
       </li>
-      <li className='py-2 text-center border-b-4 cursor-pointer'>
-        <Link href='/user'>User</Link>
+      <li className='text-center cursor-pointer'>
+        <Link href='/user' className='block w-full h-full border-b-4 py-2'>
+          User
+        </Link>
       </li>
 
       {currentUser ? (
-        <li className='py-2 text-center border-b-4 cursor-pointer'>
-          <button onClick={() => signOut()}>Signout</button>
+        <li className='text-center cursor-pointer'>
+          <button onClick={() => signOut()} className='py-2 border-b-4'>
+            Signout
+          </button>
         </li>
       ) : (
-        <li className='py-2 text-center border-b-4 cursor-pointer'>
+        <li className='text-center cursor-pointer'>
           {/* <button onClick={() => signIn()}>Signin</button> */}
-          <Link href='/auth/login'>Signin</Link>
+          <Link href='/auth/login' className='py-2 border-b-4'>
+            Signin
+          </Link>
         </li>
       )}
     </ul>

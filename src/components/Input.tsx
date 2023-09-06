@@ -1,5 +1,5 @@
 import React from 'react'
-import { UseFormRegister, FieldValues, FieldErrors } from 'react-hook-form'
+import { FieldErrors } from 'react-hook-form'
 
 interface InputProps {
   id: string
@@ -7,10 +7,10 @@ interface InputProps {
   type?: string
   disabled?: boolean
   formatPrice?: boolean
-  required?: boolean
-  register: UseFormRegister<FieldValues>
   errors: FieldErrors
   autoComplete?: 'on' | 'off'
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const Input: React.FC<InputProps> = ({
@@ -19,10 +19,10 @@ const Input: React.FC<InputProps> = ({
   type = 'text',
   disabled,
   formatPrice,
-  register,
-  required,
   errors,
   autoComplete = 'on',
+  value,
+  onChange,
 }) => {
   return (
     <div className='relative w-full'>
@@ -32,7 +32,6 @@ const Input: React.FC<InputProps> = ({
       <input
         id={id}
         disabled={disabled}
-        {...register(id, { required })}
         placeholder=''
         type={type}
         className={`
@@ -52,6 +51,8 @@ const Input: React.FC<InputProps> = ({
           ${errors[id] ? 'focus:border-rose-500' : 'focus:border-black'}        
         `}
         autoComplete={autoComplete}
+        value={value}
+        onChange={onChange}
       />
       <label
         className={`

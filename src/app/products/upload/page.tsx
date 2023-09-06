@@ -10,36 +10,35 @@ import axios from 'axios'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import {
+  Controller,
+  FieldValues,
+  SubmitHandler,
+  useForm,
+} from 'react-hook-form'
 
 const ProductUploadPage = () => {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 
   const {
-    register,
     handleSubmit,
-    setValue,
-    watch,
     formState: { errors },
     reset,
+    control,
   } = useForm<FieldValues>({
     defaultValues: {
       title: '',
       description: '',
       category: '',
-      latitude: 37.55270438353857,
-      longitude: 126.9728280726901,
+      mapInfo: {
+        latitude: 37.55270438353857,
+        longitude: 126.9728280726901,
+      },
       imageSrc: '',
       price: 1,
     },
   })
-
-  const imageSrc = watch('imageSrc')
-  const category = watch('category')
-
-  const latitude = watch('latitude')
-  const longitude = watch('longitude')
 
   const KakaoMap = dynamic(() => import('@/components/KakaoMap'), {
     ssr: false,
@@ -62,80 +61,119 @@ const ProductUploadPage = () => {
       })
   }
 
-  const setCustomValue = (id: string, value: unknown) => {
-    setValue(id, value)
-  }
-
   return (
     <Container>
       <div className='max-w-screen-lg mx-auto'>
         <form className='flex flex-col gap-8' onSubmit={handleSubmit(onSubmit)}>
           <Heading title='Product Upload' subtitle='upload your product' />
-          <ImageUpload
-            onChange={(value) => setCustomValue('imageSrc', value)}
-            value={imageSrc}
+          <Controller
+            name='imageSrc'
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <ImageUpload
+                onChange={(value) => onChange(value)}
+                value={value}
+              />
+            )}
           />
 
-          <Input
-            id='title'
-            label='title'
-            disabled={isLoading}
-            register={register}
-            errors={errors}
-            required
+          <Controller
+            name='title'
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                id='title'
+                label='title'
+                disabled={isLoading}
+                errors={errors}
+                value={value}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  onChange(e.target.value)
+                }
+              />
+            )}
+            rules={{ required: true }}
+          />
+
+          <hr />
+
+          <Controller
+            name='description'
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                id='description'
+                label='description'
+                disabled={isLoading}
+                errors={errors}
+                value={value}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  onChange(e.target.value)
+                }
+              />
+            )}
+            rules={{ required: true }}
           />
           <hr />
 
-          <Input
-            id='description'
-            label='Description'
-            disabled={isLoading}
-            register={register}
-            errors={errors}
-            required
-          />
-          <hr />
-
-          <Input
-            id='price'
-            label='Price'
-            formatPrice
-            disabled={isLoading}
-            register={register}
-            errors={errors}
-            required
+          <Controller
+            name='price'
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                id='price'
+                label='price'
+                disabled={isLoading}
+                errors={errors}
+                value={value}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  onChange(e.target.value)
+                }
+              />
+            )}
+            rules={{ required: true }}
           />
           <hr />
 
           <div
             className='
-              grid 
-              grid-cols-1 
-              md:grid-cols-2 
-              gap-3 
-              max-h-[50vh] 
-              autoflow-y-auto'
+                  grid 
+                  grid-cols-1 
+                  md:grid-cols-2 
+                  gap-3 
+                  max-h-[50vh] 
+                  autoflow-y-auto'
           >
-            {categories.map((item) => {
-              return (
-                <div key={item.label} className='col-span-1'>
-                  <CategoryInput
-                    onClick={(category) => setCustomValue('category', category)}
-                    selected={category === item.path}
-                    label={item.label}
-                    icon={item.icon}
-                    path={item.path}
-                  />
-                </div>
-              )
-            })}
+            <>
+              {categories.map((item) => {
+                return (
+                  <div key={item.label} className='col-span-1'>
+                    <Controller
+                      name='category'
+                      control={control}
+                      render={({ field: { onChange, value } }) => (
+                        <CategoryInput
+                          onClick={onChange}
+                          selected={value === item.path}
+                          label={item.label}
+                          icon={item.icon}
+                          path={item.path}
+                        />
+                      )}
+                    />
+                  </div>
+                )
+              })}
+            </>
           </div>
           <hr />
 
-          <KakaoMap
-            setCustomValue={setCustomValue}
-            latitude={latitude}
-            longitude={longitude}
+          <Controller
+            name='mapInfo'
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <KakaoMap data={value} onChange={onChange} />
+            )}
           />
 
           <Button label='상품 생성하기' />
