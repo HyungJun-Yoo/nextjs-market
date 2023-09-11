@@ -5,6 +5,7 @@ export interface IUser {
   image: string
   password: string
   userType: string
+  favoriteIds: string[]
   createdAt: Date
   updateAt: Date
 }
@@ -17,10 +18,8 @@ export interface IProducts {
   category: string
   userId: string
   price: number
-  mapinfo: {
-    latitude: number
-    longitude: number
-  }
+  latitude: number
+  longitude: number
   createdAt: Date
   updateAt: Date
 }

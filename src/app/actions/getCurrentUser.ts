@@ -17,7 +17,12 @@ export default async function getCurrentUser() {
     const docSnap = await firebase_getDoc(docRef)
 
     if (docSnap.exists()) {
-      const currentUser = docSnap.data()
+      const data = docSnap.data()
+      const currentUser = {
+        ...data,
+        createdAt: data.createdAt.toDate(),
+        updateAt: data.updateAt.toDate(),
+      }
       return currentUser as IUser
     } else {
       return null

@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import Navbar from '@/components/Navbar'
 import getCurrentUser from '@/app/actions/getCurrentUser'
 import Script from 'next/script'
+import ToastProvider from '@/components/ToastProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,11 +19,12 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const currentUser = await getCurrentUser()
-  console.log('root', currentUser)
+  // console.log('root', currentUser)
   return (
     <html lang='ko'>
       <body className={inter.className}>
         <Navbar currentUser={currentUser} />
+        <ToastProvider />
         {children}
         <Script src='//dapi.kakao.com/v2/maps/sdk.js?appkey=73c7d960208d7b380b360e9382f0bb6b&libraries=services,clusterer&autoload=false' />
       </body>

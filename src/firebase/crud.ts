@@ -3,11 +3,14 @@ import {
   DocumentReference,
   doc,
   getDoc,
+  getDocs,
   setDoc,
   collection,
   CollectionReference,
   addDoc,
   Timestamp,
+  Query,
+  updateDoc,
 } from 'firebase/firestore'
 
 interface DocumentData {
@@ -20,7 +23,7 @@ export function firebase_getCollection(colName: string) {
   return collectionRef
 }
 
-export async function firebase_addDoc(
+export async function firebase_collection_addDoc(
   ref: CollectionReference,
   data: DocumentData
 ) {
@@ -32,6 +35,13 @@ export async function firebase_addDoc(
   })
 
   return collectionSnap.id
+}
+
+export async function firebase_collection_getDoc(
+  ref: CollectionReference | Query
+) {
+  const querySnapshot = await getDocs(ref)
+  return querySnapshot
 }
 
 // 컬렉션 내에 문서까지 다루기
@@ -57,4 +67,19 @@ export async function firebase_setDoc(
     createdAt: Timestamp.fromDate(new Date()),
     updateAt: Timestamp.fromDate(new Date()),
   })
+}
+
+export async function firebase_updateDoc(ref: DocumentReference, data: any) {
+  const docRef = ref
+  try {
+    await updateDoc(docRef, {
+      ...data,
+      updateAt: Timestamp.fromDate(new Date()),
+    })
+
+    return (await firebase_getDoc(docRef)).data()
+  } catch (err) {
+    console.error('Error updating document: ', err)
+    return null
+  }
 }

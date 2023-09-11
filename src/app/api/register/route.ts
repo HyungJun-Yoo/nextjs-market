@@ -17,6 +17,7 @@ export async function POST(request: Request) {
     image = '',
     password,
     userType = 'User',
+    favoriteIds = [],
   } = body
 
   const hashedPassword = await bcrypt.hash(password, 12)
@@ -38,6 +39,7 @@ export async function POST(request: Request) {
     image,
     password: hashedPassword,
     userType,
+    favoriteIds,
   })
 
   const snapshot = await firebase_getDoc(docRef)

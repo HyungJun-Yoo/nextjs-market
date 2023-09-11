@@ -1,6 +1,10 @@
 import getCurrentUser from '@/app/actions/getCurrentUser'
-import { firebase_getCollection, firebase_addDoc } from '@/firebase/crud'
+import {
+  firebase_getCollection,
+  firebase_collection_addDoc,
+} from '@/firebase/crud'
 import { NextResponse } from 'next/server'
+import uuid from 'react-uuid'
 
 export async function POST(request: Request) {
   const currentUser = await getCurrentUser()
@@ -20,17 +24,16 @@ export async function POST(request: Request) {
   })
 
   const ref = firebase_getCollection('products')
-  const products = await firebase_addDoc(ref, {
-    data: {
-      title,
-      description,
-      imageSrc,
-      category,
-      latitude,
-      longitude,
-      price: Number(price),
-      userId: currentUser.id,
-    },
+  const products = await firebase_collection_addDoc(ref, {
+    id: uuid(),
+    title,
+    description,
+    imageSrc,
+    category,
+    latitude,
+    longitude,
+    price: Number(price),
+    userId: currentUser.id,
   })
 
   return NextResponse.json(products)

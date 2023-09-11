@@ -10,3 +10,10 @@
 - NextAuth
 - Next Cloudinary
 - react-kakao-maps-sdk
+
+### etc
+
+- react-toastify
+- dayjs
+- @lucasmogari/react-pagination
+- react-loader-spinner
