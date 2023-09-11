@@ -8,7 +8,7 @@ type DataType = {
 
 interface KakaoMapProps {
   data: DataType
-  onChange: (data: DataType) => void
+  onChange?: (data: DataType) => void
   detailPage?: boolean
 }
 
@@ -20,7 +20,7 @@ const KakaoMap = ({ data, onChange, detailPage = false }: KakaoMapProps) => {
       longitude: mouseEvent.latLng.getLng(),
     }
 
-    onChange(newData)
+    onChange!(newData)
   }
 
   return (

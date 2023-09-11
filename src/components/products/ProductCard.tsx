@@ -3,7 +3,7 @@ import { IProducts, IUser } from '@/firebase/type'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import HeartButton from './HeartButton'
+import HeartButton from '../HeartButton'
 import { fromNow } from '@/helpers/dayjs'
 
 interface ProductCardProps {
