@@ -17,7 +17,6 @@ export default async function Home({ searchParams }: HomeProps) {
   const pageNum = typeof page === 'string' ? Number(page) : 1
 
   const products = await getProducts(searchParams)
-  console.log('products', products)
   const currentUser = await getCurrentUser()
 
   return (

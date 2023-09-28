@@ -10,7 +10,6 @@ interface ImageUploadProps {
 
 const ImageUpload = ({ onChange, value }: ImageUploadProps) => {
   const hanledUpload = (result: any) => {
-    console.log('result', result)
     onChange(result.info.secure_url)
   }
 

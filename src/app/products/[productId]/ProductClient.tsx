@@ -5,6 +5,7 @@ import { categories } from '@/components/categories/Categories'
 import ProductHead from '@/components/products/ProductHead'
 import ProductInfo from '@/components/products/ProductInfo'
 import { IProducts, IUser } from '@/firebase/type'
+import axios from 'axios'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -27,6 +28,18 @@ const ProductClient = ({ product, currentUser }: ProductClientProps) => {
   }
 
   const category = categories.find((item) => item.path === product.category)
+
+  const chatClick = async () => {
+    const chatData = {
+      myEmail: currentUser!.email,
+      yourEmail: product.user.email,
+    }
+
+    const res = await axios.post('/api/chat', chatData)
+    if (res) {
+      router.push('/chat')
+    }
+  }
 
   return (
     <Container>
@@ -51,10 +64,18 @@ const ProductClient = ({ product, currentUser }: ProductClientProps) => {
           </div>
         </div>
         <div className='mt-10'>
-          <Button
-            label='이 유저와 채팅하기'
-            onClick={() => router.push('/chat')}
-          />
+          {currentUser ? (
+            currentUser.email === product.user.email ? (
+              ''
+            ) : (
+              <Button label='이 유저와 채팅하기' onClick={chatClick} />
+            )
+          ) : (
+            <Button
+              label='로그인 이후 채팅이 가능합니다'
+              onClick={() => router.push('/auth/login')}
+            />
+          )}
         </div>
       </div>
     </Container>
