@@ -8,7 +8,8 @@ Nextjs@13 학습을 목적으로 진행한 상품 플랫폼 프로젝트 입니�
 
 주요 기능은 아래와 같습니다.
 - 회원가입 및 로그인
-  - NextAuth와 firebase adpater 사용
+  - NextAuth 사용
+  - 로그인 성공 이후 사용자 session 생성
 - 상품 업로드 및 조회
 - 상품 좋아요
 - 채팅
