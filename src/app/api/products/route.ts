@@ -24,8 +24,9 @@ export async function POST(request: Request) {
   })
 
   const ref = firebase_getCollection('products')
+  const productId = uuid()
   const products = await firebase_collection_addDoc(ref, {
-    id: uuid(),
+    id: productId,
     title,
     description,
     imageSrc,
@@ -36,5 +37,6 @@ export async function POST(request: Request) {
     userId: currentUser.id,
   })
 
-  return NextResponse.json(products)
+  if (!products) return NextResponse.error()
+  return NextResponse.json(productId)
 }

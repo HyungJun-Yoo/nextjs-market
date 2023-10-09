@@ -45,7 +45,9 @@ export default async function Home({ searchParams }: HomeProps) {
         perPage={PRODUCTS_PER_PAGE}
       />
 
-      <FloatingButton href='/products/upload'>+</FloatingButton>
+      {currentUser && (
+        <FloatingButton href='/products/upload'>+</FloatingButton>
+      )}
     </Container>
   )
 }
